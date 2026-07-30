@@ -1,0 +1,206 @@
+<Window x:Class="ArchiveIndexer.SearchUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TCA Archive Ultra-Fast Search Utility"
+        Height="720" Width="1000"
+        Background="#1B1D23"
+        FontFamily="Segoe UI"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style x:Key="LogRow" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Consolas" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style x:Key="ModeRadio" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="#D1D5DB" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="0,0,20,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style x:Key="ResultLink" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#60A5FA" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontFamily" Value="Consolas" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   TextDecorations="Underline"
+                                   Foreground="{TemplateBinding Foreground}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#93C5FD" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#4B5563" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,4">
+            <TextBlock Text="TCA Raw Data Retrieval Engine"
+                       FontSize="30" FontWeight="Bold" Foreground="White"
+                       HorizontalAlignment="Center" />
+            <TextBlock Text="Search target XML raw files instantly out of historical compressed ZIP packages."
+                       FontSize="13" Foreground="#9CA3AF"
+                       HorizontalAlignment="Center" Margin="0,4,0,0" />
+        </StackPanel>
+
+        <!-- Search row -->
+        <Grid Grid.Row="1" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="#20232B" BorderBrush="#3B82F6" BorderThickness="1.5"
+                    CornerRadius="4" Margin="0,0,10,0">
+                <Grid>
+                    <TextBlock Text="&#128269;" FontSize="15" VerticalAlignment="Center"
+                               Margin="12,0,0,0" Foreground="#9CA3AF" />
+                    <TextBox x:Name="FileNameTextBox"
+                             Background="Transparent" BorderThickness="0" Foreground="White"
+                             CaretBrush="White" FontSize="14"
+                             Padding="36,12,12,12"
+                             VerticalContentAlignment="Center"
+                             GotFocus="FileNameTextBox_GotFocus"
+                             LostFocus="FileNameTextBox_LostFocus"
+                             KeyDown="FileNameTextBox_KeyDown" />
+                </Grid>
+            </Border>
+
+            <Button Grid.Column="1" x:Name="LocateButton" Content="Locate &amp; Extract"
+                    Width="160" Background="#3B82F6" Foreground="White" BorderThickness="0"
+                    FontSize="14" FontWeight="SemiBold" Cursor="Hand"
+                    Click="LocateButton_Click" />
+        </Grid>
+
+        <!-- Search mode row -->
+        <Grid Grid.Row="2" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <TextBlock Text="Search mode:" Foreground="White" FontSize="13"
+                           FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,16,0" />
+
+                <RadioButton x:Name="ExactModeRadio" Style="{StaticResource ModeRadio}"
+                             Content="Exact Match" GroupName="SearchMode"
+                             ToolTip="Finds the exact filename you enter, anywhere in the archive, and extracts it."
+                             Checked="SearchMode_Checked" />
+
+                <RadioButton x:Name="SetMatchModeRadio" Style="{StaticResource ModeRadio}"
+                             Content="Set Match" GroupName="SearchMode" IsChecked="True"
+                             ToolTip="Finds every file indexed within the selected day window before/after the entered file's timestamp."
+                             Checked="SearchMode_Checked" />
+            </StackPanel>
+
+            <StackPanel x:Name="DaysPanel" Grid.Column="1" Orientation="Horizontal"
+                        HorizontalAlignment="Right" Visibility="Collapsed">
+                <TextBlock Text="Window: &#177;" Foreground="#9CA3AF" FontSize="13"
+                           VerticalAlignment="Center" Margin="0,0,6,0" />
+                <TextBox x:Name="DaysTextBox" Width="40" Text="2" IsReadOnly="True" Focusable="False"
+                         Background="#171920" Foreground="#9CA3AF" BorderBrush="#3B82F6"
+                         BorderThickness="1" TextAlignment="Center" VerticalContentAlignment="Center" />
+                <TextBlock Text="days" Foreground="#9CA3AF" FontSize="13"
+                           VerticalAlignment="Center" Margin="6,0,0,0" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Mode info -->
+        <TextBlock Grid.Row="3" TextWrapping="Wrap" FontSize="12" Foreground="#7C8494" Margin="0,8,0,0">
+            <Run Text="Exact Match" FontWeight="SemiBold" Foreground="#9CA3AF" />
+            <Run Text=" — looks for that one filename exactly as entered, anywhere in the archive, and extracts it directly." />
+            <LineBreak />
+            <Run Text="Set Match" FontWeight="SemiBold" Foreground="#9CA3AF" />
+            <Run Text=" — lists every file indexed within &#177;2 days of the entered file's timestamp, so nearby files can be reviewed." />
+        </TextBlock>
+
+        <!-- Set Match results -->
+        <Border x:Name="ResultsPanel" Grid.Row="4" Background="#15171D" BorderBrush="#2A2E38"
+                BorderThickness="1" CornerRadius="4" Padding="14,10" Margin="0,14,0,0"
+                Visibility="Collapsed">
+            <StackPanel>
+                <TextBlock Text="Matches — click a file to extract it to the output folder"
+                           Foreground="#9CA3AF" FontSize="12" Margin="0,0,0,8" />
+                <ScrollViewer MaxHeight="180" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="ResultsItems">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                        <Button Style="{StaticResource ResultLink}"
+                                                Content="{Binding FileName}"
+                                                Click="ResultLink_Click"
+                                                ToolTip="{Binding LinkToolTip}" />
+                                        <TextBlock Text="&#9888; duplicate filename — extracting will overwrite a previous download"
+                                                   Foreground="#FACC15" FontSize="11" FontStyle="Italic"
+                                                   VerticalAlignment="Center" Margin="10,0,0,0"
+                                                   Visibility="{Binding DuplicateWarningVisibility}" />
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Foreground="#6B7280" FontFamily="Consolas"
+                                               FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0">
+                                        <Run Text="{Binding ZipName, Mode=OneWay}" />
+                                        <Run Text=" | " />
+                                        <Run Text="{Binding StartTime, StringFormat='yyyy-MM-dd HH:mm:ss', Mode=OneWay}" />
+                                    </TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
+        </Border>
+
+        <!-- Log console header -->
+        <TextBlock Grid.Row="5" Text="Execution Status Log Console"
+                   Foreground="White" FontSize="14" FontWeight="SemiBold"
+                   Margin="0,20,0,8" />
+
+        <!-- Log console -->
+        <Border Grid.Row="6" Background="#111318" CornerRadius="4" Padding="16">
+            <ScrollViewer x:Name="LogScrollViewer" VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="LogItems">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource LogRow}"
+                                       Text="{Binding Display}"
+                                       Foreground="{Binding Color}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>

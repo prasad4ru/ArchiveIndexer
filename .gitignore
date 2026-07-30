@@ -1,0 +1,36 @@
+## .NET / Visual Studio
+
+bin/
+obj/
+publish/
+Logs/
+*.user
+*.suo
+.vs/
+*.userosscache
+*.sln.docstates
+
+## Rider / VS Code
+
+.idea/
+.vscode/
+
+## Test results
+
+TestResults/
+*.trx
+coverage/
+
+## Runtime-generated data (do not commit real archive data or a real index)
+
+**/ZipCatalog.json
+**/Index/
+
+## OS files
+
+.DS_Store
+Thumbs.db
+
+## Local override configs (keep the checked-in appsettings.json as the template;
+## use appsettings.Development.json or a machine-local override for real paths)
+appsettings.*.local.json

@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+    <File Path="docs/ArchiveIndexer-Developer-Guide.docx" />
+    <File Path="LICENSE.md" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="ArchiveIndexer.Core/ArchiveIndexer.Core.csproj" />
+  <Project Path="ArchiveIndexer.Infrastructure/ArchiveIndexer.Infrastructure.csproj" />
+  <Project Path="ArchiveIndexer.SearchUI/ArchiveIndexer.SearchUI.csproj" />
+  <Project Path="ArchiveIndexer.Tests/ArchiveIndexer.Tests.csproj" Id="c1ac8b91-4974-46c1-8af5-a199c309ce98" />
+  <Project Path="ArchiveIndexer.Worker/ArchiveIndexer.Worker.csproj" />
+</Solution>
