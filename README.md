@@ -1,5 +1,10 @@
 # ArchiveIndexer
 
+**Search Flow**
+
+<img width="252" height="836" alt="image" src="https://github.com/user-attachments/assets/f043f397-1386-4e0c-9874-d63092b496b8" />
+
+
 Indexes historical XML message files out of dated ZIP archives into a searchable
 [Lucene.Net](https://lucenenet.apache.org/) index, and provides a desktop search
 UI so a support engineer can find and extract a specific file in seconds instead
