@@ -1,6 +1,6 @@
 # ArchiveIndexer
 
-##Search Flow
+## Search Flow
 
 <img width="252" height="836" alt="image" src="https://github.com/user-attachments/assets/f043f397-1386-4e0c-9874-d63092b496b8" />
 
@@ -138,10 +138,6 @@ See section 8 ("Known Technical Debt") of the developer guide for the full list 
 notably, the `EnvironmentType` field is always empty today (nothing in the
 filename convention supplies it), and the UI's "Prime Match" button currently
 runs the same query as "Exact Match" by design.
-
-## License
-
-See [`LICENSE.md`](LICENSE.md).
 
 ## License
 
